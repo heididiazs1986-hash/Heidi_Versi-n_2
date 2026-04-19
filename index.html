@@ -1,0 +1,1020 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Heidi en mejor versión</title>
+  <style>
+    :root {
+      --bg-1: #fff7fb;
+      --bg-2: #f7f0ff;
+      --card: rgba(255,255,255,0.82);
+      --line: #eadcf7;
+      --text: #40324d;
+      --muted: #7d6a90;
+      --accent: #b26cff;
+      --accent-2: #ff86ba;
+      --accent-3: #8d5cf6;
+      --success: #35b77a;
+      --warning: #f7a53a;
+      --danger: #ef5c7f;
+      --shadow: 0 10px 30px rgba(141, 92, 246, 0.12);
+      --radius: 20px;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at top left, rgba(255, 134, 186, 0.16), transparent 28%),
+        radial-gradient(circle at top right, rgba(178, 108, 255, 0.18), transparent 34%),
+        linear-gradient(180deg, var(--bg-1), var(--bg-2));
+      min-height: 100vh;
+    }
+
+    .app {
+      width: min(1180px, calc(100% - 24px));
+      margin: 0 auto;
+      padding: 18px 0 40px;
+    }
+
+    .hero {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      backdrop-filter: blur(12px);
+      background: rgba(255,247,251,0.75);
+      border: 1px solid rgba(234,220,247,0.8);
+      box-shadow: var(--shadow);
+      border-radius: 0 0 22px 22px;
+      padding: 14px 16px;
+      margin-bottom: 16px;
+    }
+
+    .hero-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .title-wrap h1 {
+      margin: 0;
+      font-size: clamp(1.4rem, 2.8vw, 2rem);
+      line-height: 1.1;
+    }
+
+    .title-wrap p {
+      margin: 6px 0 0;
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    .pill-row {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 12px;
+    }
+
+    .pill {
+      background: rgba(255,255,255,0.82);
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 10px 14px;
+      font-size: 0.9rem;
+      color: var(--text);
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 16px;
+      align-items: start;
+    }
+
+    .stack {
+      display: grid;
+      gap: 16px;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid rgba(234,220,247,0.95);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 18px;
+    }
+
+    .card h2 {
+      margin: 0 0 6px;
+      font-size: 1.08rem;
+    }
+
+    .sub {
+      color: var(--muted);
+      font-size: 0.92rem;
+      margin-bottom: 14px;
+    }
+
+    .grid-2,
+    .grid-3,
+    .grid-4 {
+      display: grid;
+      gap: 12px;
+    }
+
+    .grid-2 { grid-template-columns: repeat(2, minmax(0,1fr)); }
+    .grid-3 { grid-template-columns: repeat(3, minmax(0,1fr)); }
+    .grid-4 { grid-template-columns: repeat(4, minmax(0,1fr)); }
+
+    label {
+      display: block;
+      font-size: 0.88rem;
+      color: var(--muted);
+      margin-bottom: 6px;
+    }
+
+    input, textarea, select {
+      width: 100%;
+      border: 1px solid #dcc9ef;
+      background: rgba(255,255,255,0.95);
+      color: var(--text);
+      border-radius: 14px;
+      padding: 12px 13px;
+      outline: none;
+      font: inherit;
+      transition: 0.2s ease;
+    }
+
+    input:focus, textarea:focus, select:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 4px rgba(178,108,255,0.12);
+    }
+
+    textarea { min-height: 110px; resize: vertical; }
+
+    .btn-row {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    button {
+      border: 0;
+      border-radius: 14px;
+      padding: 11px 14px;
+      font: inherit;
+      cursor: pointer;
+      transition: transform 0.08s ease, opacity 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    button:hover { opacity: 0.96; }
+    button:active { transform: translateY(1px); }
+
+    .primary {
+      background: linear-gradient(135deg, var(--accent), var(--accent-3));
+      color: white;
+      box-shadow: 0 8px 18px rgba(141, 92, 246, 0.24);
+    }
+
+    .secondary {
+      background: linear-gradient(135deg, #ffd4e7, #ffe9f4);
+      color: #7e3b5d;
+    }
+
+    .ghost {
+      background: rgba(255,255,255,0.9);
+      color: var(--text);
+      border: 1px solid var(--line);
+    }
+
+    .danger {
+      background: #fff1f4;
+      color: #b33f61;
+      border: 1px solid #ffd2dc;
+    }
+
+    .success {
+      background: #eefbf5;
+      color: #1d7e52;
+      border: 1px solid #ccefdc;
+    }
+
+    .metrics {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0,1fr));
+      gap: 12px;
+    }
+
+    .metric {
+      background: rgba(255,255,255,0.86);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 14px;
+    }
+
+    .metric .k {
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-top: 5px;
+    }
+
+    .tiny { font-size: 0.82rem; color: var(--muted); }
+
+    .list {
+      display: grid;
+      gap: 10px;
+    }
+
+    .item {
+      background: rgba(255,255,255,0.9);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 12px;
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      align-items: flex-start;
+    }
+
+    .item strong { display: block; margin-bottom: 4px; }
+    .item p { margin: 0; color: var(--muted); font-size: 0.9rem; }
+    .item .actions { display: flex; gap: 8px; flex-wrap: wrap; }
+
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      border-radius: 999px;
+      padding: 5px 10px;
+      font-size: 0.8rem;
+      background: #f5effd;
+      color: #7752b5;
+      border: 1px solid #e6d6fa;
+      margin-right: 6px;
+      margin-top: 6px;
+    }
+
+    .bar {
+      height: 10px;
+      background: #f0e6fb;
+      border-radius: 999px;
+      overflow: hidden;
+      margin-top: 8px;
+    }
+
+    .bar > span {
+      display: block;
+      height: 100%;
+      background: linear-gradient(90deg, var(--accent-2), var(--accent));
+      width: 0%;
+      transition: width 0.25s ease;
+    }
+
+    .assistant-box {
+      background: linear-gradient(135deg, rgba(255,255,255,0.95), rgba(248,241,255,0.95));
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 14px;
+      line-height: 1.5;
+      white-space: pre-wrap;
+    }
+
+    .section-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      align-items: center;
+      margin-bottom: 12px;
+      flex-wrap: wrap;
+    }
+
+    .timer {
+      font-weight: 700;
+      font-size: 1.3rem;
+      margin-top: 6px;
+    }
+
+    .footer-note {
+      text-align: center;
+      color: var(--muted);
+      font-size: 0.85rem;
+      padding-top: 8px;
+    }
+
+    @media (max-width: 920px) {
+      .layout,
+      .grid-2,
+      .grid-3,
+      .grid-4,
+      .metrics { grid-template-columns: 1fr; }
+      .hero { position: static; border-radius: 18px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <div class="hero">
+      <div class="hero-top">
+        <div class="title-wrap">
+          <h1>💜 Heidi en mejor versión</h1>
+          <p>Versión online sin instalaciones. Abre en navegador, guarda en este dispositivo y queda lista para subirse a GitHub/Vercel.</p>
+        </div>
+        <div class="btn-row">
+          <button class="ghost" onclick="exportData()">Exportar respaldo</button>
+          <button class="secondary" onclick="importDataPrompt()">Importar respaldo</button>
+          <button class="danger" onclick="resetAll()">Reiniciar app</button>
+        </div>
+      </div>
+      <div class="pill-row">
+        <div class="pill">🌅 Meta de despertar: <strong id="pillWake">6:20 AM</strong></div>
+        <div class="pill">🌙 Modo noche: <strong>11:30 PM</strong></div>
+        <div class="pill">📅 Hoy: <strong id="todayLabel"></strong></div>
+      </div>
+    </div>
+
+    <div class="metrics">
+      <div class="metric">
+        <div class="tiny">Pendientes personales</div>
+        <div class="k" id="mPersonal">0</div>
+      </div>
+      <div class="metric">
+        <div class="tiny">Pendientes de trabajo</div>
+        <div class="k" id="mWork">0</div>
+      </div>
+      <div class="metric">
+        <div class="tiny">Cigarrillos hoy</div>
+        <div class="k" id="mCigs">0</div>
+      </div>
+      <div class="metric">
+        <div class="tiny">Balance del mes</div>
+        <div class="k" id="mBalance">$0</div>
+      </div>
+    </div>
+
+    <div class="layout" style="margin-top:16px;">
+      <div class="stack">
+        <section class="card">
+          <div class="section-head">
+            <div>
+              <h2>🌅 Inicio del día</h2>
+              <div class="sub">Directo, corto y sin regaños teatrales.</div>
+            </div>
+            <button class="primary" onclick="markMorningDone()">Ya me levanté</button>
+          </div>
+          <div class="assistant-box" id="morningMessage"></div>
+          <div class="grid-3" style="margin-top:12px;">
+            <div>
+              <label>Hora objetivo</label>
+              <input id="wakeGoal" type="time" value="06:20" />
+            </div>
+            <div>
+              <label>Hora real de hoy</label>
+              <input id="wakeReal" type="time" />
+            </div>
+            <div>
+              <label>Estado al despertar</label>
+              <select id="wakeMood">
+                <option value="agotada">Agotada</option>
+                <option value="normal">Normal</option>
+                <option value="con sueño">Con sueño</option>
+                <option value="ansiosa">Ansiosa</option>
+                <option value="bien">Bien</option>
+              </select>
+            </div>
+          </div>
+          <div class="btn-row" style="margin-top:12px;">
+            <button class="ghost" onclick="saveWakeInfo()">Guardar mañana</button>
+          </div>
+        </section>
+
+        <section class="card">
+          <div class="section-head">
+            <div>
+              <h2>📋 Tareas personales</h2>
+              <div class="sub">Máximo tres importantes al día. La sobrecarga también procrastina.</div>
+            </div>
+          </div>
+          <div class="grid-3">
+            <div>
+              <label>Tarea</label>
+              <input id="personalTitle" placeholder="Ej. Tender la cama" />
+            </div>
+            <div>
+              <label>Categoría</label>
+              <select id="personalCategory">
+                <option>Casa</option>
+                <option>Salud</option>
+                <option>Cuidado personal</option>
+                <option>Lectura</option>
+                <option>Estudio</option>
+                <option>Otro</option>
+              </select>
+            </div>
+            <div>
+              <label>Prioridad</label>
+              <select id="personalPriority">
+                <option value="Alta">Alta</option>
+                <option value="Media">Media</option>
+                <option value="Baja">Baja</option>
+              </select>
+            </div>
+          </div>
+          <div class="btn-row" style="margin-top:12px;">
+            <button class="primary" onclick="addTask('personal')">Agregar tarea personal</button>
+          </div>
+          <div class="list" id="personalList" style="margin-top:14px;"></div>
+        </section>
+
+        <section class="card">
+          <div class="section-head">
+            <div>
+              <h2>💼 Trabajo</h2>
+              <div class="sub">Saca pendientes de la cabeza y ponlos en fila.</div>
+            </div>
+          </div>
+          <div class="grid-4">
+            <div>
+              <label>Pendiente laboral</label>
+              <input id="workTitle" placeholder="Ej. Informe Sesquilé" />
+            </div>
+            <div>
+              <label>Fecha límite</label>
+              <input id="workDue" type="date" />
+            </div>
+            <div>
+              <label>Prioridad</label>
+              <select id="workPriority">
+                <option value="Alta">Alta</option>
+                <option value="Media">Media</option>
+                <option value="Baja">Baja</option>
+              </select>
+            </div>
+            <div>
+              <label>Tipo</label>
+              <select id="workType">
+                <option>Informe</option>
+                <option>Correo</option>
+                <option>Cronograma</option>
+                <option>Seguimiento</option>
+                <option>Otro</option>
+              </select>
+            </div>
+          </div>
+          <div class="btn-row" style="margin-top:12px;">
+            <button class="primary" onclick="addTask('work')">Agregar pendiente laboral</button>
+            <button class="secondary" onclick="startFocus()">Enfocarme 25 min</button>
+            <button class="ghost" onclick="stopFocus()">Detener</button>
+          </div>
+          <div class="timer" id="focusTimer">25:00</div>
+          <div class="tiny">Mensaje de enfoque: <span id="focusMessage">Concéntrate. Solo 25 minutos. Nada más importa.</span></div>
+          <div class="list" id="workList" style="margin-top:14px;"></div>
+        </section>
+
+        <section class="card">
+          <div class="section-head">
+            <div>
+              <h2>🚬🍷 Hábitos de hoy</h2>
+              <div class="sub">No juzga. Mide.</div>
+            </div>
+          </div>
+          <div class="grid-4">
+            <div>
+              <label>Cigarrillos</label>
+              <div class="btn-row">
+                <button class="secondary" onclick="changeCigs(-1)">-1</button>
+                <button class="primary" onclick="changeCigs(1)">+1</button>
+              </div>
+              <div class="tag">Hoy: <strong id="cigsValue">0</strong></div>
+            </div>
+            <div>
+              <label>Alcohol hoy</label>
+              <div class="btn-row">
+                <button class="success" onclick="setAlcohol(false)">No</button>
+                <button class="danger" onclick="setAlcohol(true)">Sí</button>
+              </div>
+              <div class="tag" id="alcoholTag">Sin registrar</div>
+            </div>
+            <div>
+              <label>Agua</label>
+              <input id="waterGlasses" type="number" min="0" placeholder="Vasos" />
+            </div>
+            <div>
+              <label>Movimiento</label>
+              <select id="movementDone">
+                <option value="No">No</option>
+                <option value="Sí">Sí</option>
+              </select>
+            </div>
+          </div>
+          <div class="btn-row" style="margin-top:12px;">
+            <button class="ghost" onclick="saveHabits()">Guardar hábitos</button>
+          </div>
+        </section>
+
+        <section class="card">
+          <div class="section-head">
+            <div>
+              <h2>🧹 Modo caos</h2>
+              <div class="sub">Para esos días en que el apartamento parece haber peleado contigo.</div>
+            </div>
+            <button class="primary" onclick="activateChaosMode()">Estoy en caos</button>
+          </div>
+          <div class="assistant-box" id="chaosBox">Presiona el botón y te daré una misión corta, no una novela doméstica.</div>
+        </section>
+      </div>
+
+      <div class="stack">
+        <section class="card">
+          <div class="section-head">
+            <div>
+              <h2>🪞 Asistente del día</h2>
+              <div class="sub">Responde con firmeza en trabajo y suavidad útil en lo personal.</div>
+            </div>
+          </div>
+          <div class="assistant-box" id="assistantBox">Hola, Heidi. No necesitas arreglar tu vida completa hoy. Necesitas hacer bien la siguiente cosa.</div>
+          <div class="btn-row" style="margin-top:12px;">
+            <button class="primary" onclick="generateCoachMessage()">Dame una guía para hoy</button>
+          </div>
+        </section>
+
+        <section class="card">
+          <div class="section-head">
+            <div>
+              <h2>📖 Diario</h2>
+              <div class="sub">Escribe como hablas. Sin pose. Sin filtro.</div>
+            </div>
+          </div>
+          <label>¿Cómo te fue hoy?</label>
+          <textarea id="journalText" placeholder="Hoy me sentí..., hice..., evité..., me dolió..., me enojó..., mañana quiero..."></textarea>
+          <div class="btn-row" style="margin-top:12px;">
+            <button class="primary" onclick="evaluateDay()">Evaluar mi día</button>
+            <button class="ghost" onclick="saveJournalOnly()">Guardar diario</button>
+          </div>
+          <div class="assistant-box" id="journalResponse" style="margin-top:12px;">Cuando cierres el día, aquí aparecerá una lectura honesta y útil.</div>
+        </section>
+
+        <section class="card">
+          <div class="section-head">
+            <div>
+              <h2>💰 Finanzas simples</h2>
+              <div class="sub">Todavía no es contabilidad completa. Ya es orden.</div>
+            </div>
+          </div>
+          <div class="grid-2">
+            <div>
+              <label>Ingreso del mes</label>
+              <input id="income" type="number" min="0" placeholder="0" />
+            </div>
+            <div>
+              <label>Gastos del mes</label>
+              <input id="expenses" type="number" min="0" placeholder="0" />
+            </div>
+            <div>
+              <label>Gasto semanal en cigarrillo/alcohol</label>
+              <input id="viceSpend" type="number" min="0" placeholder="300000" />
+            </div>
+            <div>
+              <label>Pago a deuda prioritaria</label>
+              <input id="debtPay" type="number" min="0" placeholder="0" />
+            </div>
+          </div>
+          <div class="btn-row" style="margin-top:12px;">
+            <button class="primary" onclick="saveFinance()">Guardar finanzas</button>
+          </div>
+          <div class="assistant-box" id="financeSummary" style="margin-top:12px;">Tu balance aparecerá aquí.</div>
+        </section>
+
+        <section class="card">
+          <div class="section-head">
+            <div>
+              <h2>🌙 Cierre del día</h2>
+              <div class="sub">Tu app no te endulza el desastre, pero tampoco te deja sola en él.</div>
+            </div>
+          </div>
+          <div class="grid-2">
+            <div>
+              <label>¿Qué tan bien cuidaste tu día?</label>
+              <select id="dayScore">
+                <option value="1">1 - Fatal</option>
+                <option value="2">2 - Flojo</option>
+                <option value="3">3 - Medio</option>
+                <option value="4">4 - Bien</option>
+                <option value="5">5 - Muy bien</option>
+              </select>
+            </div>
+            <div>
+              <label>¿Te vas a acostar antes de 11:30?</label>
+              <select id="sleepIntent">
+                <option value="Sí">Sí</option>
+                <option value="No">No</option>
+                <option value="Intentaré">Intentaré</option>
+              </select>
+            </div>
+          </div>
+          <div class="btn-row" style="margin-top:12px;">
+            <button class="primary" onclick="closeDay()">Apagar el día</button>
+          </div>
+          <div class="assistant-box" id="nightBox" style="margin-top:12px;">A las 11:30 PM, tu única misión es dejar de negociar contigo.</div>
+        </section>
+
+        <div class="footer-note">Versión 1 online ligera. Publicable sin instalar nada. Los datos quedan guardados en este navegador hasta que conectemos base de datos en la siguiente etapa.</div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const STORAGE_KEY = 'heidi_mejor_version_online_v1';
+    let focusInterval = null;
+    let focusSeconds = 25 * 60;
+
+    const defaultState = {
+      wakeGoal: '06:20',
+      wakeReal: '',
+      wakeMood: 'agotada',
+      morningDone: false,
+      personalTasks: [],
+      workTasks: [],
+      habits: {
+        cigs: 0,
+        alcohol: null,
+        water: 0,
+        movement: 'No'
+      },
+      journalText: '',
+      journalResponse: '',
+      finance: {
+        income: 0,
+        expenses: 0,
+        viceSpend: 0,
+        debtPay: 0
+      },
+      dayScore: '3',
+      sleepIntent: 'Intentaré',
+      lastCoach: ''
+    };
+
+    let state = loadState();
+
+    function loadState() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (!raw) return structuredClone(defaultState);
+        return { ...structuredClone(defaultState), ...JSON.parse(raw), habits: { ...defaultState.habits, ...(JSON.parse(raw).habits || {}) }, finance: { ...defaultState.finance, ...(JSON.parse(raw).finance || {}) } };
+      } catch {
+        return structuredClone(defaultState);
+      }
+    }
+
+    function saveState() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+      renderAll();
+    }
+
+    function currency(n) {
+      return new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP', maximumFractionDigits: 0 }).format(Number(n || 0));
+    }
+
+    function todayText() {
+      return new Intl.DateTimeFormat('es-CO', { weekday: 'long', day: 'numeric', month: 'long' }).format(new Date());
+    }
+
+    function renderAll() {
+      document.getElementById('todayLabel').textContent = todayText();
+      document.getElementById('pillWake').textContent = formatTime12(state.wakeGoal);
+      document.getElementById('wakeGoal').value = state.wakeGoal;
+      document.getElementById('wakeReal').value = state.wakeReal || '';
+      document.getElementById('wakeMood').value = state.wakeMood;
+      document.getElementById('waterGlasses').value = state.habits.water || '';
+      document.getElementById('movementDone').value = state.habits.movement;
+      document.getElementById('cigsValue').textContent = state.habits.cigs;
+      document.getElementById('alcoholTag').textContent = state.habits.alcohol === null ? 'Sin registrar' : state.habits.alcohol ? 'Sí consumiste' : 'No consumiste';
+      document.getElementById('journalText').value = state.journalText || '';
+      document.getElementById('journalResponse').textContent = state.journalResponse || 'Cuando cierres el día, aquí aparecerá una lectura honesta y útil.';
+      document.getElementById('income').value = state.finance.income || '';
+      document.getElementById('expenses').value = state.finance.expenses || '';
+      document.getElementById('viceSpend').value = state.finance.viceSpend || '';
+      document.getElementById('debtPay').value = state.finance.debtPay || '';
+      document.getElementById('dayScore').value = state.dayScore;
+      document.getElementById('sleepIntent').value = state.sleepIntent;
+      document.getElementById('assistantBox').textContent = state.lastCoach || 'Hola, Heidi. No necesitas arreglar tu vida completa hoy. Necesitas hacer bien la siguiente cosa.';
+      document.getElementById('morningMessage').textContent = state.morningDone
+        ? 'Bien. Ya arrancaste. Ahora evita negociar con el celular y el desgano.'
+        : 'LEVÁNTATE YA. Tu yo de las 6:20 necesita una aliada, no otra excusa.';
+
+      renderTaskList('personal');
+      renderTaskList('work');
+      updateMetrics();
+      renderFinanceSummary();
+    }
+
+    function renderTaskList(type) {
+      const listEl = document.getElementById(type === 'personal' ? 'personalList' : 'workList');
+      const items = type === 'personal' ? state.personalTasks : state.workTasks;
+      if (!items.length) {
+        listEl.innerHTML = `<div class="assistant-box">Aún no hay ${type === 'personal' ? 'tareas personales' : 'pendientes laborales'}. Mejor pocas y claras que muchas y fantasma.</div>`;
+        return;
+      }
+      listEl.innerHTML = items.map((item, index) => {
+        const meta = type === 'personal'
+          ? `<span class="tag">${item.category}</span><span class="tag">${item.priority}</span>`
+          : `<span class="tag">${item.type}</span><span class="tag">${item.priority}</span>${item.due ? `<span class="tag">${item.due}</span>` : ''}`;
+        return `
+          <div class="item">
+            <div>
+              <strong>${escapeHtml(item.title)}</strong>
+              <p>${item.done ? 'Completada' : 'Pendiente'}</p>
+              <div>${meta}</div>
+            </div>
+            <div class="actions">
+              ${!item.done ? `<button class="success" onclick="completeTask('${type}', ${index})">✔</button>` : ''}
+              <button class="danger" onclick="deleteTask('${type}', ${index})">✕</button>
+            </div>
+          </div>`;
+      }).join('');
+    }
+
+    function addTask(type) {
+      if (type === 'personal') {
+        const title = document.getElementById('personalTitle').value.trim();
+        const category = document.getElementById('personalCategory').value;
+        const priority = document.getElementById('personalPriority').value;
+        if (!title) return alert('Escribe una tarea personal.');
+        state.personalTasks.unshift({ title, category, priority, done: false });
+        document.getElementById('personalTitle').value = '';
+      } else {
+        const title = document.getElementById('workTitle').value.trim();
+        const due = document.getElementById('workDue').value;
+        const priority = document.getElementById('workPriority').value;
+        const typeVal = document.getElementById('workType').value;
+        if (!title) return alert('Escribe un pendiente laboral.');
+        state.workTasks.unshift({ title, due, priority, type: typeVal, done: false });
+        document.getElementById('workTitle').value = '';
+        document.getElementById('workDue').value = '';
+      }
+      saveState();
+    }
+
+    function completeTask(type, index) {
+      const arr = type === 'personal' ? state.personalTasks : state.workTasks;
+      arr[index].done = true;
+      saveState();
+    }
+
+    function deleteTask(type, index) {
+      const arr = type === 'personal' ? state.personalTasks : state.workTasks;
+      arr.splice(index, 1);
+      saveState();
+    }
+
+    function markMorningDone() {
+      state.morningDone = true;
+      saveWakeInfo();
+      state.lastCoach = 'Bien. Ya te levantaste. Tu siguiente victoria no es pensar demasiado. Es hacer la primera tarea importante.';
+      saveState();
+    }
+
+    function saveWakeInfo() {
+      state.wakeGoal = document.getElementById('wakeGoal').value || '06:20';
+      state.wakeReal = document.getElementById('wakeReal').value;
+      state.wakeMood = document.getElementById('wakeMood').value;
+      saveState();
+    }
+
+    function changeCigs(delta) {
+      state.habits.cigs = Math.max(0, Number(state.habits.cigs || 0) + delta);
+      saveState();
+    }
+
+    function setAlcohol(value) {
+      state.habits.alcohol = value;
+      saveState();
+    }
+
+    function saveHabits() {
+      state.habits.water = Number(document.getElementById('waterGlasses').value || 0);
+      state.habits.movement = document.getElementById('movementDone').value;
+      state.lastCoach = generateHabitInsight();
+      saveState();
+    }
+
+    function generateHabitInsight() {
+      const c = state.habits.cigs || 0;
+      const a = state.habits.alcohol;
+      const w = state.habits.water || 0;
+      const m = state.habits.movement;
+      if (c >= 8) return 'Hoy tus cigarrillos ya te están cobrando factura. No necesitas prometer dejarlo todo. Necesitas bajarle un poco mañana.';
+      if (a === true) return 'Si hoy hubo alcohol, mañana tu prioridad no es castigarte. Es cortar el rebote: agua, comida simple y descanso.';
+      if (w < 4) return 'Antes de pedirle energía al cuerpo, dale agua. No es poesía, es mecánica.';
+      if (m === 'Sí') return 'Bien. El movimiento cuenta aunque no haya sido épico. Tu cuerpo no necesita perfección, necesita continuidad.';
+      return 'Hoy no salió todo, pero ya estás midiendo. Eso le quita neblina al problema.';
+    }
+
+    function activateChaosMode() {
+      const options = [
+        'Misión de 10 minutos: recoge basura visible, ordena una superficie y lava 3 cosas. Luego te detienes.',
+        'Misión de rescate: reúne ropa fuera de lugar, despeja una silla o mesa y saca una bolsa de basura.',
+        'Modo supervivencia doméstica: tiende cama o sofá, junta envases vacíos y deja libre un rincón visible.'
+      ];
+      document.getElementById('chaosBox').textContent = options[Math.floor(Math.random() * options.length)];
+    }
+
+    function generateCoachMessage() {
+      const pendingPersonal = state.personalTasks.filter(t => !t.done).length;
+      const pendingWork = state.workTasks.filter(t => !t.done).length;
+      const cigs = state.habits.cigs || 0;
+      let msg = '';
+
+      if (!state.morningDone) {
+        msg = 'Tu primer trabajo hoy es levantarte a tiempo. No te analices tanto antes de salir de la cama.';
+      } else if (pendingWork > 3) {
+        msg = 'Trabajo: estás cargando demasiado abierto. Escoge una sola entrega crítica, pon 25 minutos y atácala primero.';
+      } else if (pendingPersonal > 3) {
+        msg = 'Vida personal: estás metiendo demasiadas cosas. Reduce. Haz 1 de casa, 1 de cuidado y 1 de salud. Nada más.';
+      } else if (cigs >= 6) {
+        msg = 'Hoy el cigarrillo ya te está comiendo energía y plata. No negocies el siguiente automático. Retrásalo un poco.';
+      } else {
+        msg = 'Vas bien si haces una cosa importante antes de distraerte. La paz no cae del cielo. Se fabrica con acciones pequeñas.';
+      }
+      state.lastCoach = msg;
+      saveState();
+    }
+
+    function evaluateDay() {
+      const text = document.getElementById('journalText').value.trim();
+      state.journalText = text;
+      state.journalResponse = buildJournalResponse(text);
+      state.lastCoach = state.journalResponse;
+      saveState();
+    }
+
+    function saveJournalOnly() {
+      state.journalText = document.getElementById('journalText').value.trim();
+      saveState();
+    }
+
+    function buildJournalResponse(text) {
+      if (!text) {
+        return 'No te escondas detrás del vacío. Escribe aunque sea tres líneas: qué hiciste, qué evitaste y qué necesitas mañana.';
+      }
+      const lower = text.toLowerCase();
+      const hasStress = ['ansiedad', 'estrés', 'estres', 'cansada', 'agotada', 'triste', 'mal'].some(w => lower.includes(w));
+      const hasAvoid = ['no hice', 'procrast', 'evité', 'evite', 'pospuse', 'me escondí', 'me escondi'].some(w => lower.includes(w));
+      const hasWin = ['logré', 'logre', 'cumplí', 'cumpli', 'hice', 'avancé', 'avance'].some(w => lower.includes(w));
+      const hasVices = ['fumé', 'fume', 'tomé', 'tome', 'alcohol', 'cigarrillo'].some(w => lower.includes(w));
+
+      if (hasStress && hasAvoid) {
+        return 'Hoy hubo cansancio y evasión. No te insultes por eso. Pero tampoco lo maquilles. Mañana reduce el día a una meta laboral y una meta personal, y cúmplelas sin discusión.';
+      }
+      if (hasVices) {
+        return 'Gracias por decir la verdad. Lo que te frena no se rompe con promesas gigantes sino con menos automatismos. Mañana registra antes de consumir. Haz visible el impulso.';
+      }
+      if (hasWin && hasStress) {
+        return 'Aun con carga emocional, te moviste. Eso vale mucho. Mañana no subas la exigencia. Repite lo que sí funcionó.';
+      }
+      if (hasWin) {
+        return 'Bien. Hoy sí hubo avance. Tu tarea ahora no es emocionarte demasiado ni soltarte. Es repetir la estructura mañana.';
+      }
+      return 'Tu día no quedó perdido, pero necesita más claridad. Antes de dormir, define tres cosas para mañana: una laboral, una de casa y una de cuidado.';
+    }
+
+    function saveFinance() {
+      state.finance.income = Number(document.getElementById('income').value || 0);
+      state.finance.expenses = Number(document.getElementById('expenses').value || 0);
+      state.finance.viceSpend = Number(document.getElementById('viceSpend').value || 0);
+      state.finance.debtPay = Number(document.getElementById('debtPay').value || 0);
+      saveState();
+    }
+
+    function renderFinanceSummary() {
+      const { income, expenses, viceSpend, debtPay } = state.finance;
+      const balance = Number(income || 0) - Number(expenses || 0) - Number(debtPay || 0);
+      const viceMonth = Number(viceSpend || 0) * 4;
+      let msg = `Balance actual estimado: ${currency(balance)}. `;
+      if (viceSpend > 0) {
+        msg += `Si mantienes ${currency(viceSpend)} semanales en vicios, eso serían aprox. ${currency(viceMonth)} al mes. Esa fuga muerde deuda, salud y futuro.`;
+      } else {
+        msg += 'Ya tienes una base para ordenar tu plata. El siguiente paso es registrar gastos más específicos.';
+      }
+      document.getElementById('financeSummary').textContent = msg;
+      document.getElementById('mBalance').textContent = currency(balance);
+    }
+
+    function closeDay() {
+      state.dayScore = document.getElementById('dayScore').value;
+      state.sleepIntent = document.getElementById('sleepIntent').value;
+      const score = Number(state.dayScore);
+      let msg = '';
+      if (score <= 2) {
+        msg = 'Hoy no fue un gran día. Aceptado. Ahora córtale el combustible a la caída: aléjate del celular, toma agua y deja lista una sola prioridad para mañana.';
+      } else if (score === 3) {
+        msg = 'Día medio. Ni desastre total ni victoria limpia. Mañana ganas si madrugas y atacas primero lo más importante.';
+      } else {
+        msg = 'Bien. Hoy hubo algo de orden. No lo rompas con una madrugada larga. A las 11:30 se apaga el día y punto.';
+      }
+      if (state.sleepIntent === 'No') {
+        msg += ' Y ojo: ya sabes que trasnochar te cobra mañana. No actúes como si no supieras.';
+      }
+      document.getElementById('nightBox').textContent = msg;
+      state.lastCoach = msg;
+      saveState();
+    }
+
+    function updateMetrics() {
+      document.getElementById('mPersonal').textContent = state.personalTasks.filter(t => !t.done).length;
+      document.getElementById('mWork').textContent = state.workTasks.filter(t => !t.done).length;
+      document.getElementById('mCigs').textContent = state.habits.cigs || 0;
+    }
+
+    function startFocus() {
+      stopFocus();
+      focusSeconds = 25 * 60;
+      document.getElementById('focusMessage').textContent = 'Concéntrate. Solo 25 minutos. Nada más importa.';
+      renderFocus();
+      focusInterval = setInterval(() => {
+        focusSeconds--;
+        renderFocus();
+        if (focusSeconds <= 0) {
+          stopFocus();
+          document.getElementById('focusMessage').textContent = 'Bloque terminado. Levántate, respira y decide si haces otro.';
+          alert('Bloque de enfoque terminado.');
+        }
+      }, 1000);
+    }
+
+    function stopFocus() {
+      if (focusInterval) clearInterval(focusInterval);
+      focusInterval = null;
+    }
+
+    function renderFocus() {
+      const min = String(Math.floor(focusSeconds / 60)).padStart(2, '0');
+      const sec = String(focusSeconds % 60).padStart(2, '0');
+      document.getElementById('focusTimer').textContent = `${min}:${sec}`;
+    }
+
+    function exportData() {
+      const blob = new Blob([JSON.stringify(state, null, 2)], { type: 'application/json' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = 'heidi_mejor_version_respaldo.json';
+      a.click();
+      URL.revokeObjectURL(a.href);
+    }
+
+    function importDataPrompt() {
+      const input = document.createElement('input');
+      input.type = 'file';
+      input.accept = '.json';
+      input.onchange = (e) => {
+        const file = e.target.files?.[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = () => {
+          try {
+            state = { ...structuredClone(defaultState), ...JSON.parse(reader.result) };
+            saveState();
+            alert('Respaldo importado.');
+          } catch {
+            alert('No pude leer ese respaldo.');
+          }
+        };
+        reader.readAsText(file);
+      };
+      input.click();
+    }
+
+    function resetAll() {
+      if (!confirm('Esto borrará lo guardado en este navegador. ¿Segura?')) return;
+      localStorage.removeItem(STORAGE_KEY);
+      state = structuredClone(defaultState);
+      saveState();
+    }
+
+    function formatTime12(v) {
+      if (!v) return '--';
+      const [h, m] = v.split(':').map(Number);
+      const date = new Date();
+      date.setHours(h, m);
+      return new Intl.DateTimeFormat('es-CO', { hour: 'numeric', minute: '2-digit' }).format(date);
+    }
+
+    function escapeHtml(text) {
+      return text
+        .replaceAll('&', '&amp;')
+        .replaceAll('<', '&lt;')
+        .replaceAll('>', '&gt;')
+        .replaceAll('"', '&quot;')
+        .replaceAll("'", '&#039;');
+    }
+
+    renderFocus();
+    renderAll();
+  </script>
+</body>
+</html>
