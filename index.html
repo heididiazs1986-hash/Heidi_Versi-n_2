@@ -1,6 +1,11 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+  <link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#d40000">
+
+<link rel="icon" sizes="192x192" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-180.png">
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Heidi en mejor versión</title>
@@ -629,6 +634,18 @@
   </div>
 
   <script>
+    <script>
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", async () => {
+    try {
+      await navigator.serviceWorker.register("./sw.js");
+      console.log("SW listo");
+    } catch (e) {
+      console.log("SW error", e);
+    }
+  });
+}
+</script>
     const STORAGE_KEY = 'heidi_mejor_version_online_v1';
     let focusInterval = null;
     let focusSeconds = 25 * 60;
