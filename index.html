@@ -659,16 +659,10 @@
       lastCoach: ''
     };
 
-   let state;
-try {
-  state = loadState();
-} catch(e) {
-  console.log("Error cargando estado:", e);
-  state = JSON.parse(JSON.stringify(defaultState));
-}
+    let state = loadState();
 
     function loadState() {
-  try {
+      try {
         const raw = localStorage.getItem(STORAGE_KEY);
         if (!raw) return structuredClone(defaultState);
         return { ...structuredClone(defaultState), ...JSON.parse(raw), habits: { ...defaultState.habits, ...(JSON.parse(raw).habits || {}) }, finance: { ...defaultState.finance, ...(JSON.parse(raw).finance || {}) } };
@@ -676,11 +670,7 @@ try {
         return structuredClone(defaultState);
       }
     }
-  } catch(e) {
-    console.log("Fallo loadState:", e);
-    return JSON.parse(JSON.stringify(defaultState));
-  }
-}
+
     function saveState() {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
       renderAll();
